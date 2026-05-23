@@ -16,9 +16,14 @@ def create_app() -> Flask:
     # fine for practice. Real apps use a database.
     app.notes: list[dict] = []  # type: ignore[attr-defined]
 
-    @app.route("/")
-    def home():
-        return render_template("home.html", notes=app.notes)
+   @app.route("/")
+def home():
+    q = request.args.get("q", "").strip()
+    if q:
+        filtered = [n for n in app.notes if q.lower() in n["title"].lower() or q.lower() in n["body"].lower()]
+    else:
+        filtered = app.notes
+    return render_template("home.html", notes=filtered, q=q)
 
     @app.route("/notes/new", methods=["GET", "POST"])
     def new_note():
