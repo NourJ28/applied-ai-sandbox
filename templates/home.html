@@ -15,8 +15,13 @@
 <body>
   <h1>Sandbox Notes</h1>
   <p class="meta">A tiny note-taking app. Practice ground for the Applied AI cohort.</p>
-
   <a class="btn" href="{{ url_for('new_note') }}">+ New note</a>
+
+  <form method="get" action="/" style="margin-top: 1rem;">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search notes..." style="padding: 0.4rem 0.75rem; border: 1px solid #ddd; border-radius: 6px; width: 60%;">
+    <button type="submit" style="padding: 0.4rem 0.75rem; background: #1a2540; color: #fff; border: none; border-radius: 6px; cursor: pointer;">Search</button>
+    {% if q %}<a href="/" style="margin-left: 0.5rem; color: #666;">Clear</a>{% endif %}
+  </form>
 
   <h2 style="margin-top: 2rem;">Your notes ({{ notes|length }})</h2>
   {% if notes %}
@@ -27,7 +32,7 @@
       </div>
     {% endfor %}
   {% else %}
-    <p>No notes yet.</p>
+    <p>{% if q %}No notes match your search.{% else %}No notes yet.{% endif %}</p>
   {% endif %}
 </body>
 </html>
